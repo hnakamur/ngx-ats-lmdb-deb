@@ -1,4 +1,4 @@
-ngx-ats-lmdb (0.1.0-1ppa1~ubuntu18.04) bionic; urgency=medium
+ngx-ats-lmdb (0.1.0-1ppa1~ubuntu22.04) jammy; urgency=medium
 
   * Initial release.
 
