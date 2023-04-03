@@ -1,0 +1,5 @@
+ngx-ats-lmdb (0.1.0-1ppa1~ubuntu18.04) bionic; urgency=medium
+
+  * Initial release.
+
+ -- Hiroaki Nakamura <hnakamur@gmail.com>  Mon, 03 Apr 2023 14:33:44 +0900
