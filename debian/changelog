@@ -1,3 +1,9 @@
+ngx-ats-lmdb (0.2.0-1ppa1~ubuntu18.04) bionic; urgency=medium
+
+  * New upstream version 0.2.0
+
+ -- Hiroaki Nakamura <hnakamur@gmail.com>  Fri, 14 Apr 2023 09:38:13 +0900
+
 ngx-ats-lmdb (0.1.0-1ppa1~ubuntu18.04) bionic; urgency=medium
 
   * Initial release.
