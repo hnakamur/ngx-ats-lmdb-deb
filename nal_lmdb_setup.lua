@@ -3,10 +3,6 @@ local function setup(shlib_name)
     local S = ffi.load(shlib_name)
 
     ffi.cdef[[
-        int nal_env_init(const char *env_path, size_t max_databases,
-                         unsigned int max_readers, size_t map_size, uint32_t file_mode,
-                         int use_tls);
-
         typedef unsigned int     MDB_dbi;
         typedef struct MDB_val {
             size_t      mv_size;
@@ -49,7 +45,7 @@ local function setup(shlib_name)
 
         int nal_env_init(const char *env_path, size_t max_databases,
                          unsigned int max_readers, size_t map_size, uint32_t file_mode,
-                         int use_tls);
+                         int use_tls, int read_only);
 
         const char *nal_strerror(int err);
 
@@ -86,9 +82,9 @@ local function setup(shlib_name)
         return ffi.string(S.nal_strerror(err))
     end
 
-    local function env_init(env_path, max_databases, max_readers, map_size, file_mode, use_tls)
+    local function env_init(env_path, max_databases, max_readers, map_size, file_mode, use_tls, read_only)
         -- use 0 if use_tls is nil
-        local rc = S.nal_env_init(env_path, max_databases, max_readers, map_size, file_mode, use_tls or 0)
+        local rc = S.nal_env_init(env_path, max_databases, max_readers, map_size, file_mode, use_tls or 0, read_only or 0)
         if rc ~= MDB_SUCCESS then
             return nal_strerror(rc)
         end
@@ -116,6 +112,15 @@ local function setup(shlib_name)
     local function dbi_open(txn, name)
         local dbi = ffi.new(c_dbi_type)
         local rc = S.nal_dbi_open(txn, name, dbi)
+        if rc ~= MDB_SUCCESS then
+            return nil, nal_strerror(rc)
+        end
+        return dbi[0]
+    end
+
+    local function readonly_dbi_open(txn, name)
+        local dbi = ffi.new(c_dbi_type)
+        local rc = S.nal_readonly_dbi_open(txn, name, dbi)
         if rc ~= MDB_SUCCESS then
             return nil, nal_strerror(rc)
         end
@@ -329,10 +334,16 @@ local function setup(shlib_name)
         return err
     end
 
-    local function open_databases(databases)
-        return update(function(txn)
+    local function open_databases(databases, read_only)
+        local txn_fn = update
+        local open_fn = dbi_open
+        if read_only then
+            txn_fn = view
+            open_fn = readonly_dbi_open
+        end
+        return txn_fn(function(txn)
             for i, db in ipairs(databases) do
-                local dbi, err = dbi_open(txn, db)
+                local dbi, err = open_fn(txn, db)
                 if err ~= nil then
                     return err
                 end
