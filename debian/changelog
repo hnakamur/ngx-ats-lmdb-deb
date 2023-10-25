@@ -1,3 +1,9 @@
+ngx-ats-lmdb (0.4.0-1ppa3~ubuntu22.04) jammy; urgency=medium
+
+  * Just to increment version to rebuild on PPA 
+
+ -- Hiroaki Nakamura <hnakamur@gmail.com>  Wed, 25 Oct 2023 13:24:07 +0900
+
 ngx-ats-lmdb (0.4.0-1ppa2~ubuntu22.04) jammy; urgency=medium
 
   * Change lua file directory to /usr/share/luajit-2.1
