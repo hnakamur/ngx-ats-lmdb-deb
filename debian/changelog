@@ -1,3 +1,9 @@
+ngx-ats-lmdb (0.4.0-1ppa2~ubuntu18.04) jammy; urgency=medium
+
+  * Change lua file directory to /usr/share/luajit-2.1
+
+ -- Hiroaki Nakamura <hnakamur@gmail.com>  Wed, 25 Oct 2023 10:05:19 +0900
+
 ngx-ats-lmdb (0.4.0-1ppa1~ubuntu18.04) bionic; urgency=medium
 
   * New upstream version 0.4.0
